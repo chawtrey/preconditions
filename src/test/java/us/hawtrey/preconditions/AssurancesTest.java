@@ -37,8 +37,12 @@ public class AssurancesTest {
 
         boolean bVal = Assurances.assureNotNull(null, true);
         assertTrue(bVal);
+
+        FakeClass fake = Assurances.assureNotNull(null, new FakeClass());
+        assertNotNull(fake);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void assureNotNullCollection() throws Exception {
         ArrayList<String> foo = Assurances.assureNotNull(inputArrayList);
@@ -61,6 +65,7 @@ public class AssurancesTest {
         assertNotNull(foo);
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void assureArrayList() throws Exception {
         List<String> baz = Assurances.assureArrayList(null);
@@ -77,6 +82,7 @@ public class AssurancesTest {
         assertEquals(input.size(), out.size());
     }
 
+    @SuppressWarnings("AssertEqualsBetweenInconvertibleTypes")
     @Test
     public void assureLinkedList() throws Exception {
         LinkedList<String> linkedListOut = Assurances.assureLinkedList(inputArrayList);
