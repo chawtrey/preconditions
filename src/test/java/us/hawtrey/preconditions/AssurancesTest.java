@@ -16,6 +16,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static us.hawtrey.preconditions.Assurances.assureNotNull;
 
 public class AssurancesTest {
 
@@ -32,13 +33,13 @@ public class AssurancesTest {
 
     @Test
     public void assureNotNullWithDefaults() throws Exception {
-        int iVal = Assurances.assureNotNull(null, 0);
+        int iVal = assureNotNull(null, 0);
         assertEquals(0, iVal);
 
-        boolean bVal = Assurances.assureNotNull(null, true);
+        boolean bVal = assureNotNull(null, true);
         assertTrue(bVal);
 
-        FakeClass fake = Assurances.assureNotNull(null, new FakeClass());
+        FakeClass fake = assureNotNull(null, new FakeClass());
         assertNotNull(fake);
     }
 
@@ -50,18 +51,18 @@ public class AssurancesTest {
         assertTrue(inputArrayList == foo);
 
         TreeSet<String> barInput = new TreeSet<>();
-        Set<String> bar = Assurances.assureNotNull(barInput);
+        Set<String> bar = assureNotNull(barInput);
         assertTrue(bar instanceof TreeSet);
         assertTrue(barInput == bar);
 
         TreeSet<String> input = null;
-        Set<String> baz = Assurances.assureNotNull(input);
+        Set<String> baz = assureNotNull(input);
         assertTrue(baz instanceof HashSet);
     }
 
     @Test
     public void assureNotNullWithDefaultClass() throws Exception {
-        FakeClass foo = Assurances.assureNotNull(null, FakeClass.class);
+        FakeClass foo = assureNotNull(null, FakeClass.class);
         assertNotNull(foo);
     }
 

@@ -11,13 +11,33 @@ import java.util.Set;
 
 import static us.hawtrey.preconditions.PreChecks.checkNotNull;
 
-@SuppressWarnings({"unused", "WeakerAccess"})
+@SuppressWarnings({"unused", "WeakerAccess", "unchecked"})
 public class Assurances {
 
+    /**
+     * Returns the reference value if it is not {@code null}.
+     * Otherwise it will return the default value. The default value may also be
+     * {@code null} in which case the return value will be {@code null}.
+     *
+     * @param reference    an {@code Object} that is validated.
+     * @param defaultValue the {@code Object} that is returned when reference is {@code null}.
+     * @return the reference object or the default object
+     */
     public static <T> T assureNotNull(T reference, T defaultValue) {
         return reference == null ? defaultValue : reference;
     }
 
+    /**
+     * Returns the reference value if it is not {@code null}.
+     * Otherwise it will return a new instance of the default {@link java.lang.Class}
+     *
+     * @param reference    the {@code Object} that is validated.
+     * @param defaultClass the {@link java.lang.Class} that will be used to instantiate the return object
+     * @return the reference object or a new instance of the default class
+     * @throws NullPointerException     thrown when both the reference object and the default class are null
+     * @throws IllegalArgumentException thrown when the default class is not concrete or
+     *                                  it does not have a zero parameter constructor
+     */
     public static <T> T assureNotNull(T reference, Class<T> defaultClass) {
         try {
             return reference != null ? reference :
@@ -27,61 +47,175 @@ public class Assurances {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Returns the reference value if it is not {@code null}.
+     * Otherwise it will return a new empty {@link java.util.ArrayList}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.List}
+     * @return the reference object or a new empty {@link java.util.ArrayList}.
+     */
     public static <C extends List<T>, T> C assureNotNull(C reference) {
         return reference != null ? reference : (C) new ArrayList<T>();
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Returns the reference value if it is not {@code null}.
+     * Otherwise it will return a new empty {@link java.util.HashSet}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Set}
+     * @return the reference object or a new empty {@link java.util.HashSet}.
+     */
     public static <C extends Set<T>, T> C assureNotNull(C reference) {
         return reference != null ? reference : (C) new HashSet<T>();
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Returns the reference value if it is not {@code null}.
+     * Otherwise it will return a new empty {@link java.util.HashMap}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Map}
+     * @return the reference object or a new empty {@link java.util.HashMap}.
+     */
     public static <M extends Map<K, V>, K, V> M assureNotNull(M reference) {
         return reference != null ? reference : (M) new HashMap<K, V>();
     }
 
+    /**
+     * Always returns an {@link java.util.ArrayList}.
+     * If the reference object is not null and an {@link java.util.ArrayList} it will return the reference object.
+     * If the reference object is not null and not an {@link java.util.ArrayList}
+     * it will return a new {@link java.util.ArrayList} containing all elements of the reference object,
+     * in the order they are returned by the collection's iterator.
+     * Otherwise it will return a new empty {@link java.util.ArrayList}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Collection}
+     * @return an {@link java.util.ArrayList}.
+     */
     public static <T> ArrayList<T> assureArrayList(Collection<T> reference) {
         Collection<T> temp = reference != null ? reference : new ArrayList<>();
         return (temp instanceof ArrayList) ? (ArrayList<T>) temp : new ArrayList<>(temp);
     }
 
+    /**
+     * Always returns a {@link java.util.LinkedList}.
+     * If the reference object is not null and a {@link java.util.LinkedList} it will return the reference object.
+     * If the reference object is not null and not a {@link java.util.LinkedList}
+     * it will return a new {@link java.util.LinkedList} containing all elements of the reference object,
+     * in the order they are returned by the collection's iterator.
+     * Otherwise it will return a new empty {@link java.util.LinkedList}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Collection}
+     * @return a {@link java.util.LinkedList}.
+     */
     public static <T> LinkedList<T> assureLinkedList(Collection<T> reference) {
         Collection<T> temp = reference != null ? reference : new LinkedList<>();
         return (temp instanceof LinkedList) ? (LinkedList<T>) temp : new LinkedList<>(temp);
     }
 
+    /**
+     * Always returns a {@link java.util.HashSet}. 
+     * If the reference object is not null and a {@link java.util.HashSet} it will return the reference object.
+     * If the reference object is not null and not a {@link java.util.HashSet}
+     * it will return a new {@link java.util.HashSet} containing all elements of the reference object, 
+     * in the order they are returned by the collection's iterator.
+     * Otherwise it will return a new empty {@link java.util.HashSet}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Collection}
+     * @return a {@link java.util.HashSet}.
+     */
     public static <T> HashSet<T> assureHashSet(Collection<T> reference) {
         Collection<T> temp = reference != null ? reference : new HashSet<>();
         return (temp instanceof HashSet) ? (HashSet<T>) temp : new HashSet<>(temp);
     }
 
+    /**
+     * Always returns a {@link java.util.HashMap}. 
+     * If the reference object is not null and a {@link java.util.HashMap} it will return the reference object.
+     * If the reference object is not null and not a {@link java.util.HashMap}
+     * it will return a new {@link java.util.HashMap} with the same mappings as the
+     * reference {@link java.util.Map}.
+     * Otherwise it will return a new empty {@link java.util.HashMap}.
+     *
+     * @param reference an {@code Object} that implements {@link java.util.Map}
+     * @return a {@link java.util.HashMap}.
+     */
     public static <K, V> HashMap<K, V> assureHashMap(Map<K, V> reference) {
         Map<K, V> temp = reference != null ? reference : new HashMap<>();
         return (temp instanceof HashMap) ? (HashMap<K, V>) temp : new HashMap<>(temp);
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()} has been performed.
+     * If the reference String is null, an empty String is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace.
+     */
     public static String assureTrimOrEmpty(String reference) {
         return assureNotNull(reference, "").trim();
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()}
+     * and a {@link String#toLowerCase()} have been performed.
+     * If the reference String is null, an empty String is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace and case shifted.
+     */
     public static String assureTrimLowerOrEmpty(String reference) {
         return assureTrimOrEmpty(reference).toLowerCase();
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()}
+     * and a {@link String#toUpperCase()} have been performed.
+     * If the reference String is null, an empty String is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace and case shifted.
+     */
     public static String assureTrimUpperOrEmpty(String reference) {
         return assureTrimOrEmpty(reference).toUpperCase();
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()} has been performed.
+     * If the reference String is null, a null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace.
+     */
     public static String assureTrimOrNull(String reference) {
         return getPossibleNullString(assureTrimOrEmpty(reference));
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()}
+     * and a {@link String#toLowerCase()} have been performed.
+     * If the reference String is null, a null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace and case shifted.
+     */
     public static String assureTrimLowerOrNull(String reference) {
         return getPossibleNullString(assureTrimLowerOrEmpty(reference));
     }
 
+    /**
+     * Returns a String whose value is the reference String
+     * after a {@link java.lang.String#trim()}
+     * and a {@link String#toUpperCase()} have been performed.
+     * If the reference String is null, a null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the reference object trimmed of leading and trailing whitespace and case shifted.
+     */
     public static String assureTrimUpperOrNull(String reference) {
         return getPossibleNullString(assureTrimUpperOrEmpty(reference));
     }
@@ -90,84 +224,144 @@ public class Assurances {
         return reference.length() == 0 ? null : reference;
     }
 
+    /**
+     * Returns the {@code int} value of the reference String.
+     * If the reference String is not a valid number or is null then {@code 0} is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code int} value of the reference String
+     */
     public static int assureInt(String reference) {
-        return assureInt(reference, 0);
+        return (int) assureDouble(reference, 0D);
     }
 
+    /**
+     * Returns the {@code int} value of the reference String.
+     * If the reference String is not a valid number or is null then the default value is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code int} value of the reference String
+     */
     public static int assureInt(String reference, int defaultValue) {
         return (int) assureDouble(reference, defaultValue);
     }
 
+    /**
+     * Returns the {@link java.lang.Integer} value of the reference String.
+     * If the reference String is not a valid number or is null then null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@link java.lang.Integer} value of the reference String
+     */
     public static Integer assureIntegerOrNull(String reference) {
         Double dub = assureDoubleOrNull(reference);
         return dub == null ? null : dub.intValue();
     }
 
+    /**
+     * Returns the {@code long} value of the reference String.
+     * If the reference String is not a valid number or is null then {@code 0} is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code long} value of the reference String
+     */
     public static long assureLong(String reference) {
-        return assureLong(reference, 0L);
+        return (long) assureDouble(reference, 0D);
     }
 
+    /**
+     * Returns the {@code long} value of the reference String.
+     * If the reference String is not a valid number or is null then the default value is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code long} value of the reference String
+     */
     public static long assureLong(String reference, long defaultValue) {
         return (long) assureDouble(reference, defaultValue);
     }
 
+    /**
+     * Returns the {@link java.lang.Long} value of the reference String.
+     * If the reference String is not a valid number or is null then null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@link java.lang.Long} value of the reference String
+     */
     public static Long assureLongOrNull(String reference) {
         Double dub = assureDoubleOrNull(reference);
         return dub == null ? null : dub.longValue();
     }
 
+    /**
+     * Returns the {@code float} value of the reference String.
+     * If the reference String is not a valid number or is null then {@code 0.0} is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code float} value of the reference String
+     */
     public static float assureFloat(String reference) {
-        return assureFloat(reference, 0F);
+        return (float) assureDouble(reference, 0D);
     }
 
+    /**
+     * Returns the {@code float} value of the reference String.
+     * If the reference String is not a valid number or is null then the default value is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code float} value of the reference String
+     */
     public static float assureFloat(String reference, float defaultValue) {
         return (float) assureDouble(reference, defaultValue);
     }
 
+    /**
+     * Returns the {@link java.lang.Float} value of the reference String.
+     * If the reference String is not a valid number or is null then null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@link java.lang.Float} value of the reference String
+     */
     public static Float assureFloatOrNull(String reference) {
         Double dub = assureDoubleOrNull(reference);
         return dub == null ? null : dub.floatValue();
     }
 
+    /**
+     * Returns the {@code double} value of the reference String.
+     * If the reference String is not a valid number or is null then {@code 0.0} is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code double} value of the reference String
+     */
     public static double assureDouble(String reference) {
         return assureDouble(reference, 0D);
     }
 
+    /**
+     * Returns the {@code double} value of the reference String.
+     * If the reference String is not a valid number or is null then the default value is returned.
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@code double} value of the reference String
+     */
     public static double assureDouble(String reference, double defaultValue) {
         Double dub = assureDoubleOrNull(reference);
         return dub == null ? defaultValue : dub;
     }
 
+    /**
+     * Returns the {@link java.lang.Double} value of the reference String.
+     * If the reference String is not a valid number or is null then null is returned
+     *
+     * @param reference a {@link java.lang.String} to be evaluated.
+     * @return the {@link java.lang.Double} value of the reference String
+     */
     public static Double assureDoubleOrNull(String reference) {
-        String ref = assureTrimOrNull(reference);
-        if (ref == null) {
+        try {
+            return new Double(assureTrimOrEmpty(reference));
+        } catch (NumberFormatException e) {
             return null;
         }
-        boolean hasDecimal = false;
-        boolean hasSign = false;
-        int size = ref.length();
-        for (int i = 0; i < size; i++) {
-            char charAt = ref.charAt(i);
-            if (charAt == '-' || charAt == '+') {
-                if (i != 0 || size == 1) {
-                    return null;
-                }
-                hasSign = true;
-            } else if (charAt == '.') {
-                if (hasDecimal || size == 1) {
-                    return null;
-                }
-                hasDecimal = true;
-            } else if (Character.isWhitespace(charAt)) {
-                return null;
-            } else if (!Character.isDigit(charAt)) {
-                return null;
-            }
-        }
-        if (hasDecimal && hasSign && size == 2) {
-            return null;
-        }
-        return new Double(ref);
     }
 
 }
