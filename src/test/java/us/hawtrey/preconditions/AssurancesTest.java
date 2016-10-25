@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,8 +17,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static us.hawtrey.preconditions.Assurances.assureNotNull;
+import static org.junit.Assert.fail;
 
+@SuppressWarnings({"ConstantConditions", "AssertEqualsBetweenInconvertibleTypes"})
 public class AssurancesTest {
 
     private ArrayList<String> inputArrayList;
@@ -33,17 +35,16 @@ public class AssurancesTest {
 
     @Test
     public void assureNotNullWithDefaults() throws Exception {
-        int iVal = assureNotNull(null, 0);
+        int iVal = Assurances.assureNotNull(null, 0);
         assertEquals(0, iVal);
 
-        boolean bVal = assureNotNull(null, true);
+        boolean bVal = Assurances.assureNotNull(null, true);
         assertTrue(bVal);
 
-        FakeClass fake = assureNotNull(null, new FakeClass());
+        FakeClass fake = Assurances.assureNotNull(null, new FakeClass());
         assertNotNull(fake);
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void assureNotNullCollection() throws Exception {
         ArrayList<String> foo = Assurances.assureNotNull(inputArrayList);
@@ -51,22 +52,43 @@ public class AssurancesTest {
         assertTrue(inputArrayList == foo);
 
         TreeSet<String> barInput = new TreeSet<>();
-        Set<String> bar = assureNotNull(barInput);
+        Set<String> bar = Assurances.assureNotNull(barInput);
         assertTrue(bar instanceof TreeSet);
         assertTrue(barInput == bar);
 
         TreeSet<String> input = null;
-        Set<String> baz = assureNotNull(input);
+        Set<String> baz = Assurances.assureNotNull(input);
         assertTrue(baz instanceof HashSet);
     }
 
     @Test
-    public void assureNotNullWithDefaultClass() throws Exception {
-        FakeClass foo = assureNotNull(null, FakeClass.class);
+    public void assureNotNullMap() throws Exception {
+        Map<String, Object> foo = null;
+        foo = Assurances.assureNotNull(foo);
         assertNotNull(foo);
+        assertTrue(foo instanceof HashMap);
+
+        foo.put("foo", "bar");
+        Map<String, Object> bar = Assurances.assureNotNull(foo);
+        assertEquals(foo, bar);
+        assertTrue(foo == bar);
+
     }
 
-    @SuppressWarnings("ConstantConditions")
+    @Test
+    public void assureNotNullWithDefaultClass() throws Exception {
+        FakeClass foo = Assurances.assureNotNull(null, FakeClass.class);
+        assertNotNull(foo);
+
+        try {
+            Assurances.assureNotNull(null, Integer.class);
+            fail("should fail due to Integer not having a zero parameter constructor");
+        } catch (Exception e) {
+            // success
+        }
+
+    }
+
     @Test
     public void assureArrayList() throws Exception {
         List<String> baz = Assurances.assureArrayList(null);
@@ -83,7 +105,6 @@ public class AssurancesTest {
         assertEquals(input.size(), out.size());
     }
 
-    @SuppressWarnings("AssertEqualsBetweenInconvertibleTypes")
     @Test
     public void assureLinkedList() throws Exception {
         LinkedList<String> linkedListOut = Assurances.assureLinkedList(inputArrayList);
@@ -104,6 +125,26 @@ public class AssurancesTest {
     public void assureHashMap() throws Exception {
         Map<String, List<Map<String, Object>>> json = Assurances.assureHashMap(null);
         assertNotNull(json);
+    }
+
+    @Test
+    public void assureUpperLowers() throws Exception {
+        String input = "Foo Bar Baz";
+        assertEquals(input.trim(), Assurances.assureTrimOrEmpty(input));
+        assertEquals(input.trim().toLowerCase(), Assurances.assureTrimLowerOrEmpty(input));
+        assertEquals(input.trim().toUpperCase(), Assurances.assureTrimUpperOrEmpty(input));
+
+        assertEquals(input.trim(), Assurances.assureTrimOrNull(input));
+        assertEquals(input.trim().toLowerCase(), Assurances.assureTrimLowerOrNull(input));
+        assertEquals(input.trim().toUpperCase(), Assurances.assureTrimUpperOrNull(input));
+
+        assertEquals("", Assurances.assureTrimOrEmpty(null));
+        assertEquals("", Assurances.assureTrimLowerOrEmpty(null));
+        assertEquals("", Assurances.assureTrimUpperOrEmpty(null));
+
+        assertNull(Assurances.assureTrimOrNull(null));
+        assertNull(Assurances.assureTrimLowerOrNull(null));
+        assertNull(Assurances.assureTrimUpperOrNull(null));
     }
 
     @Test
@@ -130,11 +171,11 @@ public class AssurancesTest {
         assertEquals(3.4D, Assurances.assureDouble("1-2", 3.4), 0D);
         assertEquals(5.67F, Assurances.assureFloat("1 2", 5.67F), 0D);
 
-        assertNull(Assurances.assureIntegerOrNull(null));
-        assertNull(Assurances.assureIntegerOrNull(""));
-        assertNull(Assurances.assureIntegerOrNull("  "));
-        assertNull(Assurances.assureIntegerOrNull("-"));
-        assertNull(Assurances.assureIntegerOrNull("."));
-        assertNull(Assurances.assureIntegerOrNull("-."));
+        assertNull(Assurances.assureDoubleOrNull(null));
+        assertNull(Assurances.assureDoubleOrNull(""));
+        assertNull(Assurances.assureDoubleOrNull("  "));
+        assertNull(Assurances.assureDoubleOrNull("-"));
+        assertNull(Assurances.assureDoubleOrNull("."));
+        assertNull(Assurances.assureDoubleOrNull("-."));
     }
 }
