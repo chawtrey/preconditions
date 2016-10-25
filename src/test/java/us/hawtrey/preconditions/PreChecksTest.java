@@ -4,60 +4,92 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 @SuppressWarnings("ConstantConditions")
 public class PreChecksTest {
+
     @Test
-    public void checkInRange() throws Exception {
-        Integer i = 5;
-        Integer newI = PreChecks.checkRange(i, 0, 10, "Integer");
-        assertEquals(i, newI);
-
-        PreChecks.checkRange(1.234, 0.0, 10.0, "Double");
-
-        PreChecks.checkRange(2.321F, 2F, 3F, "Float");
-
-        PreChecks.checkRange(0.000000000001, 0D, 1D, "Double 1");
-        PreChecks.checkRange(0.999999999999, 0D, 1D, "Double 2");
-
-        PreChecks.checkRange(2, 2, 2, "all values equal");
+    public void checkNotNull() throws Exception {
+        assertEquals("abc", PreChecks.checkNotNull("abc", "valid"));
+        assertEquals("", PreChecks.checkNotNull("", "valid blank"));
+        assertEquals("  ", PreChecks.checkNotNull("  ", "valid whitespace"));
 
         try {
-            PreChecks.checkRange(1.000000000001, 0D, 1D, "Double");
-            fail("out of range");
-        } catch (Exception e) {
+            PreChecks.checkNotNull(null, "invalid");
+            fail("checkNotNull");
+        } catch (NullPointerException e) {
             // success
         }
     }
 
     @Test
-    public void checkPositive() throws Exception {
-        PreChecks.checkPositive(1, "integer");
-        PreChecks.checkPositive(1L, "long");
-        PreChecks.checkPositive(0.000000000000001, "double");
-        PreChecks.checkPositive(0.000000000000001F, "float");
-        PreChecks.checkPositive(new BigInteger("1"), "big integer");
+    public void checkNotBlank() throws Exception {
+        assertEquals("abc", PreChecks.checkNotBlank("abc", "valid"));
+
         try {
-            PreChecks.checkPositive(-0.000000000000001D, "double");
-            fail("Should fail since value is not positive");
+            PreChecks.checkNotBlank("", "invalid blank");
+            fail("checkNotBlank blank");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkNotBlank("   ", "invalid whitespace");
+            fail("checkNotBlank whitespace");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkNotBlank(null, "invalid null");
+            fail("checkNotBlank null");
+        } catch (NullPointerException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkArgument() throws Exception {
+        assertEquals("abc", PreChecks.checkArgument("abc", true, "valid"));
+
+        try {
+            PreChecks.checkArgument("abc", false, "invalid");
+            fail("checkArgument");
         } catch (IllegalArgumentException e) {
             // success
         }
     }
 
     @Test
-    public void checkNegativeOrZero() throws Exception {
-        PreChecks.checkNegativeOrZero(0L, "zero long");
-        PreChecks.checkNegativeOrZero(0, "zero integer");
-        PreChecks.checkNegativeOrZero(-10000L, "long");
-        PreChecks.checkNegativeOrZero(-0.00000000001D, "double");
+    public void checkElementIndexMap() throws Exception {
+        HashMap<String, Object> input = new HashMap<>();
+        input.put("foo", "bar");
+
+        assertEquals(input, PreChecks.checkElementIndex(input, 0, "valid"));
+
         try {
-            PreChecks.checkNegativeOrZero(0.000000000000001D, "double");
-            fail("Should fail since value is not negative");
+            PreChecks.checkElementIndex(input, 1, "invalid");
+            fail("invalid index");
+        } catch (IndexOutOfBoundsException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkElementIndex(input, -1, "invalid");
+            fail("negative index");
         } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            input = null;
+            PreChecks.checkElementIndex(input, 0, "invalid");
+            fail("null input");
+        } catch (NullPointerException e) {
             // success
         }
     }
@@ -93,16 +125,73 @@ public class PreChecksTest {
     }
 
     @Test
-    public void checkPositionIndexList() throws Exception {
-        ArrayList<String> input = null;
+    public void checkElementIndexString() throws Exception {
+        PreChecks.checkElementIndex("a", 0, "Success String");
+
         try {
-            PreChecks.checkPositionIndex(input, 0, "NULL ArrayList");
-            fail("Should fail since list is null");
-        } catch (NullPointerException e) {
+            PreChecks.checkElementIndex("a", 1, "String");
+            fail("Should fail since String is only 1 character long");
+        } catch (IndexOutOfBoundsException e) {
             // success
         }
 
-        input = new ArrayList<>();
+        try {
+            PreChecks.checkElementIndex("", 0, "String");
+            fail("Should fail since String is empty");
+        } catch (IndexOutOfBoundsException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkElementIndex("a", -1, "String");
+            fail("Should fail since -1 is invalid index");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            String input = null;
+            PreChecks.checkElementIndex(input, 0, "NULL ArrayList");
+            fail("Should fail since String is null");
+        } catch (NullPointerException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkPositionIndexMap() throws Exception {
+        HashMap<String, Object> input = new HashMap<>();
+        input.put("foo", "bar");
+
+        assertEquals(input, PreChecks.checkPositionIndex(input, 0, "valid"));
+        assertEquals(input, PreChecks.checkPositionIndex(input, 1, "valid"));
+
+        try {
+            PreChecks.checkPositionIndex(input, 2, "invalid");
+            fail("invalid index");
+        } catch (IndexOutOfBoundsException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkPositionIndex(input, -1, "invalid");
+            fail("negative index");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            input = null;
+            PreChecks.checkPositionIndex(input, 0, "invalid");
+            fail("null input");
+        } catch (NullPointerException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkPositionIndexList() throws Exception {
+        ArrayList<String> input = new ArrayList<>();
         input.add("foo");
 
         PreChecks.checkPositionIndex(input, 0, "Success ArrayList");
@@ -121,66 +210,149 @@ public class PreChecksTest {
         } catch (IllegalArgumentException e) {
             // success
         }
-    }
 
-    @Test
-    public void checkElementIndexString() throws Exception {
         try {
-            String input = null;
-            PreChecks.checkElementIndex(input, 0, "NULL ArrayList");
-            fail("Should fail since String is null");
+            input = null;
+            PreChecks.checkPositionIndex(input, 0, "NULL ArrayList");
+            fail("Should fail since list is null");
         } catch (NullPointerException e) {
             // success
         }
 
-        try {
-            PreChecks.checkElementIndex("", 0, "String");
-            fail("Should fail since String is empty");
-        } catch (IndexOutOfBoundsException e) {
-            // success
-        }
+    }
 
-        PreChecks.checkElementIndex("a", 0, "Success String");
+    @Test
+    public void checkPositionIndexString() throws Exception {
+        String input = "";
+        PreChecks.checkPositionIndex(input, 0, "Success String");
+
+        input = "a";
+        PreChecks.checkPositionIndex(input, 0, "Success String");
+        PreChecks.checkPositionIndex(input, 1, "Success String");
 
         try {
-            PreChecks.checkElementIndex("a", 1, "String");
+            PreChecks.checkPositionIndex(input, 2, "String");
             fail("Should fail since String is only 1 character long");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            PreChecks.checkElementIndex("a", -1, "String");
+            PreChecks.checkPositionIndex(input, -1, "String");
             fail("Should fail since -1 is invalid index");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            input = null;
+            PreChecks.checkPositionIndex(input, 0, "NULL ArrayList");
+            fail("Should fail since String is NULL");
+        } catch (NullPointerException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkRange() throws Exception {
+        Integer i = 5;
+        assertEquals(i, PreChecks.checkRange(i, 0, 10, "Integer"));
+
+        PreChecks.checkRange(1.234, 0.0, 10.0, "Double");
+
+        PreChecks.checkRange(2.321F, 2F, 3F, "Float");
+
+        PreChecks.checkRange(0.000000000001, 0D, 1D, "Double 1");
+        PreChecks.checkRange(0.999999999999, 0D, 1D, "Double 2");
+
+        PreChecks.checkRange(2, 2, 2, "all values equal");
+
+        try {
+            PreChecks.checkRange(1.000000000001, 0D, 1D, "Double");
+            fail("out of range");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkRange(1.000000000001, null, 1D, "Double");
+            fail("null start");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkRange(1.000000000001, 0D, null, "Double");
+            fail("null end");
         } catch (IllegalArgumentException e) {
             // success
         }
     }
 
     @Test
-    public void checkPositionIndexString() throws Exception {
+    public void checkPositive() throws Exception {
+        PreChecks.checkPositive(1, "integer");
+        PreChecks.checkPositive(1L, "long");
+        PreChecks.checkPositive(0.000000000000001, "double");
+        PreChecks.checkPositive(0.000000000000001F, "float");
+        PreChecks.checkPositive(new BigInteger("1"), "big integer");
         try {
-            String input = null;
-            PreChecks.checkPositionIndex(input, 0, "NULL ArrayList");
-            fail("Should fail since String is NULL");
-        } catch (NullPointerException e) {
+            PreChecks.checkPositive(0, "zero");
+            fail("Should fail since value is zero");
+        } catch (IllegalArgumentException e) {
             // success
         }
-
-        PreChecks.checkPositionIndex("", 0, "Success String");
-        PreChecks.checkPositionIndex("a", 0, "Success String");
-        PreChecks.checkPositionIndex("a", 1, "Success String");
-
         try {
-            PreChecks.checkPositionIndex("a", 2, "String");
-            fail("Should fail since String is only 1 character long");
-        } catch (IndexOutOfBoundsException e) {
+            PreChecks.checkPositive(-0.000000000000001D, "double");
+            fail("Should fail since value is not positive");
+        } catch (IllegalArgumentException e) {
             // success
         }
+    }
 
+    @Test
+    public void checkPositiveOrZero() throws Exception {
+        PreChecks.checkPositiveOrZero(1, "integer");
+        PreChecks.checkPositiveOrZero(1L, "long");
+        PreChecks.checkPositiveOrZero(0.000000000000001, "double");
+        PreChecks.checkPositiveOrZero(0.000000000000001F, "float");
+        PreChecks.checkPositiveOrZero(new BigInteger("1"), "big integer");
+        PreChecks.checkPositiveOrZero(0, "zero");
         try {
-            PreChecks.checkPositionIndex("a", -1, "String");
-            fail("Should fail since -1 is invalid index");
+            PreChecks.checkPositiveOrZero(-0.000000000000001D, "double");
+            fail("Should fail since value is not positive");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkNegative() throws Exception {
+        PreChecks.checkNegative(-1, "int");
+        PreChecks.checkNegative(-10000L, "long");
+        PreChecks.checkNegative(-0.00000000001D, "double");
+        try {
+            PreChecks.checkNegative(0, "zero");
+            fail("Should fail since value zero");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+        try {
+            PreChecks.checkNegative(0.000000000000001D, "double");
+            fail("Should fail since value is not negative");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkNegativeOrZero() throws Exception {
+        PreChecks.checkNegativeOrZero(-10000L, "long");
+        PreChecks.checkNegativeOrZero(-0.00000000001D, "double");
+        PreChecks.checkNegativeOrZero(0, "zero");
+        try {
+            PreChecks.checkNegativeOrZero(0.000000000000001D, "double");
+            fail("Should fail since value is not negative");
         } catch (IllegalArgumentException e) {
             // success
         }
@@ -245,8 +417,5 @@ public class PreChecksTest {
         } catch (NumberFormatException e) {
             // success
         }
-
-
-
     }
 }
