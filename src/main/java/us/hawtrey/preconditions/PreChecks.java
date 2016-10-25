@@ -8,12 +8,10 @@ import static java.lang.String.format;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class PreChecks {
+    private static final Object[] NULL_ARGS = null;
 
     public static <T> T checkNotNull(T reference, String msg) {
-        if (reference == null) {
-            throw new NullPointerException(msg);
-        }
-        return reference;
+        return checkNotNull(reference, msg, NULL_ARGS);
     }
 
     public static <T> T checkNotNull(T reference, String msgTemplate, Object... msgArgs) {
@@ -24,10 +22,7 @@ public class PreChecks {
     }
 
     public static String checkNotBlank(String reference, String msg) {
-        if (checkNotNull(reference, msg).trim().length() == 0) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkNotBlank(reference, msg, NULL_ARGS);
     }
 
     public static String checkNotBlank(String reference, String msgTemplate, Object... msgArgs) {
@@ -38,10 +33,7 @@ public class PreChecks {
     }
 
     public static <T> T checkArgument(T reference, boolean argument, String msg) {
-        if (!argument) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkArgument(reference, argument, msg, NULL_ARGS);
     }
 
     public static <T> T checkArgument(T reference, boolean argument, String msgTemplate, Object... msgArgs) {
@@ -52,10 +44,7 @@ public class PreChecks {
     }
 
     public static <T extends Map> T checkElementIndex(T reference, int index, String msg) {
-        if (!(checkPositiveOrZero(index, msg) < checkNotNull(reference, msg).size())) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkElementIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static <T extends Map> T checkElementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
@@ -66,10 +55,7 @@ public class PreChecks {
     }
 
     public static <T extends Collection> T checkElementIndex(T reference, int index, String msg) {
-        if (!(checkPositiveOrZero(index, msg) < checkNotNull(reference, msg).size())) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkElementIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static <T extends Collection> T checkElementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
@@ -80,10 +66,7 @@ public class PreChecks {
     }
 
     public static String checkElementIndex(String reference, int index, String msg) {
-        if (!(checkPositiveOrZero(index, msg) < checkNotNull(reference, msg).length())) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkElementIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static String checkElementIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
@@ -94,10 +77,7 @@ public class PreChecks {
     }
 
     public static <T extends Map> T checkPositionIndex(T reference, int index, String msg) {
-        if (checkPositiveOrZero(index, msg) > checkNotNull(reference, msg).size()) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkPositionIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static <T extends Map> T checkPositionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
@@ -108,10 +88,7 @@ public class PreChecks {
     }
 
     public static <T extends List> T checkPositionIndex(T reference, int index, String msg) {
-        if (checkPositiveOrZero(index, msg) > checkNotNull(reference, msg).size()) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkPositionIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static <T extends List> T checkPositionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
@@ -122,10 +99,7 @@ public class PreChecks {
     }
 
     public static String checkPositionIndex(String reference, int index, String msg) {
-        if (checkPositiveOrZero(index, msg) > checkNotNull(reference, msg).length()) {
-            throw new IndexOutOfBoundsException(msg);
-        }
-        return reference;
+        return checkPositionIndex(reference, index, msg, NULL_ARGS);
     }
 
     public static String checkPositionIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
@@ -136,11 +110,7 @@ public class PreChecks {
     }
 
     public static <T extends Number & Comparable<T>> T checkRange(T reference, T start, T end, String msg) {
-        checkNotNull(reference, msg);
-        if (!isInRange(reference, start, end)) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkRange(reference, start, end, msg, NULL_ARGS);
     }
 
     public static <T extends Number & Comparable<T>> T checkRange(T reference, T start, T end, String msgTemplate, Object... msgArgs) {
@@ -160,17 +130,11 @@ public class PreChecks {
             return true;
         }
         int eComp = reference.compareTo(end);
-        if (sComp > 0 && eComp < 0) {
-            return true;
-        }
-        return false;
+        return sComp > 0 && eComp < 0;
     }
 
     public static <T extends Number> T checkPositive(T reference, String msg) {
-        if (!(checkNotNull(reference, msg).doubleValue() > 0.0)) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkPositive(reference, msg, NULL_ARGS);
     }
 
     public static <T extends Number> T checkPositive(T reference, String msgTemplate, Object... msgArgs) {
@@ -181,10 +145,7 @@ public class PreChecks {
     }
 
     public static <T extends Number> T checkPositiveOrZero(T reference, String msg) {
-        if (!(checkNotNull(reference, msg).doubleValue() >= 0.0)) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkPositiveOrZero(reference, msg, NULL_ARGS);
     }
 
     public static <T extends Number> T checkPositiveOrZero(T reference, String msgTemplate, Object... msgArgs) {
@@ -195,10 +156,7 @@ public class PreChecks {
     }
 
     public static <T extends Number> T checkNegative(T reference, String msg) {
-        if (!(checkNotNull(reference, msg).doubleValue() < 0.0)) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkNegative(reference, msg, NULL_ARGS);
     }
 
     public static <T extends Number> T checkNegative(T reference, String msgTemplate, Object... msgArgs) {
@@ -209,10 +167,7 @@ public class PreChecks {
     }
 
     public static <T extends Number> T checkNegativeOrZero(T reference, String msg) {
-        if (!(checkNotNull(reference, msg).doubleValue() <= 0.0)) {
-            throw new IllegalArgumentException(msg);
-        }
-        return reference;
+        return checkNegativeOrZero(reference, msg, NULL_ARGS);
     }
 
     public static <T extends Number> T checkNegativeOrZero(T reference, String msgTemplate, Object... msgArgs) {
@@ -223,7 +178,7 @@ public class PreChecks {
     }
 
     public static int checkInt(String reference, String msg) {
-        return (int) checkDouble(reference, msg);
+        return checkInt(reference, msg, NULL_ARGS);
     }
 
     public static int checkInt(String reference, String msgTemplate, Object... msgArgs) {
@@ -231,11 +186,7 @@ public class PreChecks {
     }
 
     public static int checkIntStrictly(String reference, String msg) {
-        Double dub = checkDouble(reference, msg);
-        if (!dub.toString().endsWith(".0")) {
-            throw new NumberFormatException(msg);
-        }
-        return dub.intValue();
+        return checkIntStrictly(reference, msg, NULL_ARGS);
     }
 
     public static int checkIntStrictly(String reference, String msgTemplate, Object... msgArgs) {
@@ -247,7 +198,7 @@ public class PreChecks {
     }
 
     public static long checkLong(String reference, String msg) {
-        return (long) checkDouble(reference, msg);
+        return checkLong(reference, msg, NULL_ARGS);
     }
 
     public static long checkLong(String reference, String msgTemplate, Object... msgArgs) {
@@ -255,7 +206,7 @@ public class PreChecks {
     }
 
     public static float checkFloat(String reference, String msg) {
-        return (float) checkDouble(reference, msg);
+        return checkFloat(reference, msg, NULL_ARGS);
     }
 
     public static float checkFloat(String reference, String msgTemplate, Object... msgArgs) {
@@ -263,12 +214,7 @@ public class PreChecks {
     }
 
     public static double checkDouble(String reference, String msg) {
-        checkNotBlank(reference, msg);
-        Double dub = Assurances.assureDoubleOrNull(reference);
-        if (dub == null) {
-            throw new NumberFormatException(msg);
-        }
-        return dub;
+        return checkDouble(reference, msg, NULL_ARGS);
     }
 
     public static double checkDouble(String reference, String msgTemplate, Object... msgArgs) {
