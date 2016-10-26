@@ -65,6 +65,33 @@ public class PreChecksTest {
     }
 
     @Test
+    public void checkNotEmpty() throws Exception {
+        HashMap<String, String> map = new HashMap<>();
+
+        try {
+            PreChecks.checkNotEmpty(map, "empty map");
+            fail("map is empty");
+        } catch (Exception e) {
+            // success
+        }
+
+        map.put("foo", "bar");
+        PreChecks.checkNotEmpty(map, "non-empty map");
+
+        ArrayList<String> list = new ArrayList<>();
+
+        try {
+            PreChecks.checkNotEmpty(list, "empty list");
+            fail("list is empty");
+        } catch (Exception e) {
+            // success
+        }
+
+        list.add("foo");
+        PreChecks.checkNotEmpty(list, "non-empty list");
+    }
+
+    @Test
     public void checkElementIndexMap() throws Exception {
         HashMap<String, Object> input = new HashMap<>();
         input.put("foo", "bar");

@@ -96,6 +96,62 @@ public class PreChecks {
     }
 
     /**
+     * Validate that the reference {@code Map} is not empty.
+     *
+     * @param reference the {@code Map} to validate.
+     * @param msg       the message to use for the exception.
+     * @return the reference {@code Map} if it is valid.
+     * @throws IllegalArgumentException thrown if the reference {@code Map} is empty.
+     */
+    public static <T extends Map> T checkNotEmpty(T reference, String msg) {
+        return checkNotEmpty(reference, msg, NULL_ARGS);
+    }
+
+    /**
+     * Validate that the reference {@code Map} is not empty.
+     *
+     * @param reference   the {@code Map} to validate.
+     * @param msgTemplate the message template used to format the message for the exception.
+     * @param msgArgs     the message arguments used to format the message for the exception.
+     * @return the reference {@code Map} if it is valid.
+     * @throws IllegalArgumentException thrown if the reference {@code Map} is empty.
+     */
+    public static <T extends Map> T checkNotEmpty(T reference, String msgTemplate, Object... msgArgs) {
+        if (checkNotNull(reference, msgTemplate, msgArgs).isEmpty()) {
+            throw new IllegalArgumentException(format(msgTemplate, msgArgs));
+        }
+        return reference;
+    }
+
+    /**
+     * Validate that the reference {@code Collection} is not empty.
+     *
+     * @param reference   the {@code Collection} to validate.
+     * @param msg       the message to use for the exception.
+     * @return the reference {@code Collection} if it is valid.
+     * @throws IllegalArgumentException thrown if the reference {@code Collection} is empty.
+     */
+    public static <T extends Collection> T checkNotEmpty(T reference, String msg) {
+        return checkNotEmpty(reference, msg, NULL_ARGS);
+    }
+
+    /**
+     * Validate that the reference {@code Collection} is not empty.
+     *
+     * @param reference   the {@code Collection} to validate.
+     * @param msgTemplate the message template used to format the message for the exception.
+     * @param msgArgs     the message arguments used to format the message for the exception.
+     * @return the reference {@code Collection} if it is valid.
+     * @throws IllegalArgumentException thrown if the reference {@code Collection} is empty.
+     */
+    public static <T extends Collection> T checkNotEmpty(T reference, String msgTemplate, Object... msgArgs) {
+        if (checkNotNull(reference, msgTemplate, msgArgs).isEmpty()) {
+            throw new IllegalArgumentException(format(msgTemplate, msgArgs));
+        }
+        return reference;
+    }
+
+    /**
      * Validate that {@code index} specifies a valid element index in the reference {@code Map}.
      * An element index may range from zero, inclusive, to {@code Map.size()}, exclusive.
      *
