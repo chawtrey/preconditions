@@ -1,9 +1,7 @@
 # Preconditions #
 
-A simple package to make the testing of method parameters easier to write and
-easier to read, inspired by <a
-href="http://guava-libraries.googlecode.com/svn-history/r13/trunk/javadoc/com/google/common/base/Preconditions.html">Guava's
-Preconditions</a> class
+A simple library to make the testing of values easier to write and easier to read. Inspired by
+[Google's Guava Preconditions](https://github.com/google/guava/wiki/PreconditionsExplained).
 
 ## Overview ##
 
@@ -70,8 +68,3 @@ However, the `Assurances` methods do not throw exceptions, but rather return a d
         }
     }
 ```
-
-**NOTE:** within the `fetchMyBeanById` method, the embedded assurance call is converting a String to a Long.
-If the String can not be converted to a Long (e.g. it's null or contains alpha characters) the default value is returned.
-
-
