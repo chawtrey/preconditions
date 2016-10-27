@@ -6,7 +6,7 @@ import java.util.Map;
 import static java.lang.String.format;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class PreChecks {
+public class Validate {
     private static final Object[] NULL_ARGS = null;
 
     /**
@@ -17,8 +17,8 @@ public class PreChecks {
      * @return the reference {@code Object} if it is valid.
      * @throws NullPointerException thrown if the reference {@code Object} is null.
      */
-    public static <T> T checkNotNull(T reference, String msg) {
-        return checkNotNull(reference, msg, NULL_ARGS);
+    public static <T> T notNull(T reference, String msg) {
+        return notNull(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -30,7 +30,7 @@ public class PreChecks {
      * @return the reference {@code Object} if it is valid.
      * @throws NullPointerException thrown if the reference {@code Object} is null.
      */
-    public static <T> T checkNotNull(T reference, String msgTemplate, Object... msgArgs) {
+    public static <T> T notNull(T reference, String msgTemplate, Object... msgArgs) {
         if (reference == null) {
             throw new NullPointerException(format(msgTemplate, msgArgs));
         }
@@ -45,8 +45,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code String} is null.
      */
-    public static String checkNotBlank(String reference, String msg) {
-        return checkNotBlank(reference, msg, NULL_ARGS);
+    public static String notBlank(String reference, String msg) {
+        return notBlank(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -58,8 +58,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code String} is null.
      */
-    public static String checkNotBlank(String reference, String msgTemplate, Object... msgArgs) {
-        if (checkNotNull(reference, msgTemplate, msgArgs).trim().length() == 0) {
+    public static String notBlank(String reference, String msgTemplate, Object... msgArgs) {
+        if (notNull(reference, msgTemplate, msgArgs).trim().length() == 0) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -74,8 +74,8 @@ public class PreChecks {
      * @return the reference {@code Object} if the argument is valid
      * @throws IllegalArgumentException thrown if the reference {@code String} is null
      */
-    public static <T> T checkArgument(T reference, boolean argument, String msg) {
-        return checkArgument(reference, argument, msg, NULL_ARGS);
+    public static <T> T argument(T reference, boolean argument, String msg) {
+        return argument(reference, argument, msg, NULL_ARGS);
     }
 
     /**
@@ -88,7 +88,7 @@ public class PreChecks {
      * @return the reference {@code Object} if the argument is valid
      * @throws IllegalArgumentException thrown if the reference {@code String} is null
      */
-    public static <T> T checkArgument(T reference, boolean argument, String msgTemplate, Object... msgArgs) {
+    public static <T> T argument(T reference, boolean argument, String msgTemplate, Object... msgArgs) {
         if (!argument) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
@@ -103,8 +103,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Map} is empty.
      */
-    public static <T extends Map> T checkNotEmpty(T reference, String msg) {
-        return checkNotEmpty(reference, msg, NULL_ARGS);
+    public static <T extends Map> T notEmpty(T reference, String msg) {
+        return notEmpty(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -116,8 +116,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Map} is empty.
      */
-    public static <T extends Map> T checkNotEmpty(T reference, String msgTemplate, Object... msgArgs) {
-        if (checkNotNull(reference, msgTemplate, msgArgs).isEmpty()) {
+    public static <T extends Map> T notEmpty(T reference, String msgTemplate, Object... msgArgs) {
+        if (notNull(reference, msgTemplate, msgArgs).isEmpty()) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -131,8 +131,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Collection} is empty.
      */
-    public static <T extends Collection> T checkNotEmpty(T reference, String msg) {
-        return checkNotEmpty(reference, msg, NULL_ARGS);
+    public static <T extends Collection> T notEmpty(T reference, String msg) {
+        return notEmpty(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -144,8 +144,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Collection} is empty.
      */
-    public static <T extends Collection> T checkNotEmpty(T reference, String msgTemplate, Object... msgArgs) {
-        if (checkNotNull(reference, msgTemplate, msgArgs).isEmpty()) {
+    public static <T extends Collection> T notEmpty(T reference, String msgTemplate, Object... msgArgs) {
+        if (notNull(reference, msgTemplate, msgArgs).isEmpty()) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -161,8 +161,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
-    public static <T extends Map> T checkElementIndex(T reference, int index, String msg) {
-        return checkElementIndex(reference, index, msg, NULL_ARGS);
+    public static <T extends Map> T elementIndex(T reference, int index, String msg) {
+        return elementIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -176,8 +176,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
-    public static <T extends Map> T checkElementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
-        if (!(checkPositiveOrZero(index, msgTemplate, msgArgs) < checkNotNull(reference, msgTemplate, msgArgs).size())) {
+    public static <T extends Map> T elementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
+        if (!(positiveOrZero(index, msgTemplate, msgArgs) < notNull(reference, msgTemplate, msgArgs).size())) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -193,8 +193,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
-    public static <T extends Collection> T checkElementIndex(T reference, int index, String msg) {
-        return checkElementIndex(reference, index, msg, NULL_ARGS);
+    public static <T extends Collection> T elementIndex(T reference, int index, String msg) {
+        return elementIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -208,8 +208,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
-    public static <T extends Collection> T checkElementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
-        if (!(checkPositiveOrZero(index, msgTemplate, msgArgs) < checkNotNull(reference, msgTemplate, msgArgs).size())) {
+    public static <T extends Collection> T elementIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
+        if (!(positiveOrZero(index, msgTemplate, msgArgs) < notNull(reference, msgTemplate, msgArgs).size())) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -225,8 +225,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
-    public static String checkElementIndex(String reference, int index, String msg) {
-        return checkElementIndex(reference, index, msg, NULL_ARGS);
+    public static String elementIndex(String reference, int index, String msg) {
+        return elementIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -240,8 +240,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
-    public static String checkElementIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
-        if (!(checkPositiveOrZero(index, msgTemplate, msgArgs) < checkNotNull(reference, msgTemplate, msgArgs).length())) {
+    public static String elementIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
+        if (!(positiveOrZero(index, msgTemplate, msgArgs) < notNull(reference, msgTemplate, msgArgs).length())) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -257,8 +257,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
-    public static <T extends Map> T checkPositionIndex(T reference, int index, String msg) {
-        return checkPositionIndex(reference, index, msg, NULL_ARGS);
+    public static <T extends Map> T positionIndex(T reference, int index, String msg) {
+        return positionIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -272,8 +272,8 @@ public class PreChecks {
      * @return the reference {@code Map} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
-    public static <T extends Map> T checkPositionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
-        if (checkPositiveOrZero(index, msgTemplate, msgArgs) > checkNotNull(reference, msgTemplate, msgArgs).size()) {
+    public static <T extends Map> T positionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
+        if (positiveOrZero(index, msgTemplate, msgArgs) > notNull(reference, msgTemplate, msgArgs).size()) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -289,8 +289,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
-    public static <T extends Collection> T checkPositionIndex(T reference, int index, String msg) {
-        return checkPositionIndex(reference, index, msg, NULL_ARGS);
+    public static <T extends Collection> T positionIndex(T reference, int index, String msg) {
+        return positionIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -304,8 +304,8 @@ public class PreChecks {
      * @return the reference {@code Collection} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
-    public static <T extends Collection> T checkPositionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
-        if (checkPositiveOrZero(index, msgTemplate, msgArgs) > checkNotNull(reference, msgTemplate, msgArgs).size()) {
+    public static <T extends Collection> T positionIndex(T reference, int index, String msgTemplate, Object... msgArgs) {
+        if (positiveOrZero(index, msgTemplate, msgArgs) > notNull(reference, msgTemplate, msgArgs).size()) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -321,8 +321,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
-    public static String checkPositionIndex(String reference, int index, String msg) {
-        return checkPositionIndex(reference, index, msg, NULL_ARGS);
+    public static String positionIndex(String reference, int index, String msg) {
+        return positionIndex(reference, index, msg, NULL_ARGS);
     }
 
     /**
@@ -336,8 +336,8 @@ public class PreChecks {
      * @return the reference {@code String} if it is valid.
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
-    public static String checkPositionIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
-        if (checkPositiveOrZero(index, msgTemplate, msgArgs) > checkNotNull(reference, msgTemplate, msgArgs).length()) {
+    public static String positionIndex(String reference, int index, String msgTemplate, Object... msgArgs) {
+        if (positiveOrZero(index, msgTemplate, msgArgs) > notNull(reference, msgTemplate, msgArgs).length()) {
             throw new IndexOutOfBoundsException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -354,8 +354,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} falls outside of the range.
      */
-    public static <T extends Number & Comparable<T>> T checkRange(T reference, T start, T end, String msg) {
-        return checkRange(reference, start, end, msg, NULL_ARGS);
+    public static <T extends Number & Comparable<T>> T inRange(T reference, T start, T end, String msg) {
+        return inRange(reference, start, end, msg, NULL_ARGS);
     }
 
     /**
@@ -370,8 +370,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} falls outside of the range.
      */
-    public static <T extends Number & Comparable<T>> T checkRange(T reference, T start, T end, String msgTemplate, Object... msgArgs) {
-        checkNotNull(reference, msgTemplate, msgArgs);
+    public static <T extends Number & Comparable<T>> T inRange(T reference, T start, T end, String msgTemplate, Object... msgArgs) {
+        notNull(reference, msgTemplate, msgArgs);
         if (!isInRange(reference, start, end)) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
@@ -398,8 +398,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is less than or equal to {@code 0}.
      */
-    public static <T extends Number> T checkPositive(T reference, String msg) {
-        return checkPositive(reference, msg, NULL_ARGS);
+    public static <T extends Number> T positive(T reference, String msg) {
+        return positive(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -411,8 +411,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is less than or equal to {@code 0}.
      */
-    public static <T extends Number> T checkPositive(T reference, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(reference, msgTemplate, msgArgs).doubleValue() > 0.0)) {
+    public static <T extends Number> T positive(T reference, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(reference, msgTemplate, msgArgs).doubleValue() > 0.0)) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -426,8 +426,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is less than {@code 0}.
      */
-    public static <T extends Number> T checkPositiveOrZero(T reference, String msg) {
-        return checkPositiveOrZero(reference, msg, NULL_ARGS);
+    public static <T extends Number> T positiveOrZero(T reference, String msg) {
+        return positiveOrZero(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -439,8 +439,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is less than {@code 0}.
      */
-    public static <T extends Number> T checkPositiveOrZero(T reference, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(reference, msgTemplate, msgArgs).doubleValue() >= 0.0)) {
+    public static <T extends Number> T positiveOrZero(T reference, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(reference, msgTemplate, msgArgs).doubleValue() >= 0.0)) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -454,8 +454,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is greater than or equal to {@code 0}.
      */
-    public static <T extends Number> T checkNegative(T reference, String msg) {
-        return checkNegative(reference, msg, NULL_ARGS);
+    public static <T extends Number> T negative(T reference, String msg) {
+        return negative(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -467,8 +467,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is greater than or equal to {@code 0}.
      */
-    public static <T extends Number> T checkNegative(T reference, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(reference, msgTemplate, msgArgs).doubleValue() < 0.0)) {
+    public static <T extends Number> T negative(T reference, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(reference, msgTemplate, msgArgs).doubleValue() < 0.0)) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -482,8 +482,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is greater than {@code 0}.
      */
-    public static <T extends Number> T checkNegativeOrZero(T reference, String msg) {
-        return checkNegativeOrZero(reference, msg, NULL_ARGS);
+    public static <T extends Number> T negativeOrZero(T reference, String msg) {
+        return negativeOrZero(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -495,8 +495,8 @@ public class PreChecks {
      * @return the reference {@code Number} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Number} is greater than {@code 0}.
      */
-    public static <T extends Number> T checkNegativeOrZero(T reference, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(reference, msgTemplate, msgArgs).doubleValue() <= 0.0)) {
+    public static <T extends Number> T negativeOrZero(T reference, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(reference, msgTemplate, msgArgs).doubleValue() <= 0.0)) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
@@ -510,8 +510,8 @@ public class PreChecks {
      * @return the {@code int} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code int}.
      */
-    public static int checkInt(String reference, String msg) {
-        return checkInt(reference, msg, NULL_ARGS);
+    public static int intValue(String reference, String msg) {
+        return intValue(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -523,8 +523,8 @@ public class PreChecks {
      * @return the {@code int} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code int}.
      */
-    public static int checkInt(String reference, String msgTemplate, Object... msgArgs) {
-        return (int) checkDouble(reference, msgTemplate, msgArgs);
+    public static int intValue(String reference, String msgTemplate, Object... msgArgs) {
+        return (int) doubleValue(reference, msgTemplate, msgArgs);
     }
 
     /**
@@ -536,8 +536,8 @@ public class PreChecks {
      * @return the {@code int} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code int}.
      */
-    public static int checkIntStrictly(String reference, String msg) {
-        return checkIntStrictly(reference, msg, NULL_ARGS);
+    public static int strictlyIntValue(String reference, String msg) {
+        return strictlyIntValue(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -550,8 +550,8 @@ public class PreChecks {
      * @return the {@code int} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code int}.
      */
-    public static int checkIntStrictly(String reference, String msgTemplate, Object... msgArgs) {
-        Double dub = checkDouble(reference, msgTemplate, msgArgs);
+    public static int strictlyIntValue(String reference, String msgTemplate, Object... msgArgs) {
+        Double dub = doubleValue(reference, msgTemplate, msgArgs);
         if (!dub.toString().endsWith(".0")) {
             throw new NumberFormatException(format(msgTemplate, msgArgs));
         }
@@ -566,8 +566,8 @@ public class PreChecks {
      * @return the {@code long} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code long}.
      */
-    public static long checkLong(String reference, String msg) {
-        return checkLong(reference, msg, NULL_ARGS);
+    public static long longValue(String reference, String msg) {
+        return longValue(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -579,8 +579,8 @@ public class PreChecks {
      * @return the {@code long} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code long}.
      */
-    public static long checkLong(String reference, String msgTemplate, Object... msgArgs) {
-        return (long) checkDouble(reference, msgTemplate, msgArgs);
+    public static long longValue(String reference, String msgTemplate, Object... msgArgs) {
+        return (long) doubleValue(reference, msgTemplate, msgArgs);
     }
 
     /**
@@ -591,8 +591,8 @@ public class PreChecks {
      * @return the {@code float} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code float}.
      */
-    public static float checkFloat(String reference, String msg) {
-        return checkFloat(reference, msg, NULL_ARGS);
+    public static float floatValue(String reference, String msg) {
+        return floatValue(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -604,8 +604,8 @@ public class PreChecks {
      * @return the {@code float} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code float}.
      */
-    public static float checkFloat(String reference, String msgTemplate, Object... msgArgs) {
-        return (float) checkDouble(reference, msgTemplate, msgArgs);
+    public static float floatValue(String reference, String msgTemplate, Object... msgArgs) {
+        return (float) doubleValue(reference, msgTemplate, msgArgs);
     }
 
     /**
@@ -616,8 +616,8 @@ public class PreChecks {
      * @return the {@code double} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code double}.
      */
-    public static double checkDouble(String reference, String msg) {
-        return checkDouble(reference, msg, NULL_ARGS);
+    public static double doubleValue(String reference, String msg) {
+        return doubleValue(reference, msg, NULL_ARGS);
     }
 
     /**
@@ -629,24 +629,24 @@ public class PreChecks {
      * @return the {@code double} value of the reference {@code String}.
      * @throws NumberFormatException thrown if the reference {@code String} is not a valid {@code double}.
      */
-    public static double checkDouble(String reference, String msgTemplate, Object... msgArgs) {
-        checkNotBlank(reference, msgTemplate, msgArgs);
-        Double dub = Assurances.assureDoubleOrNull(reference);
+    public static double doubleValue(String reference, String msgTemplate, Object... msgArgs) {
+        notBlank(reference, msgTemplate, msgArgs);
+        Double dub = Assure.doubleOrNull(reference);
         if (dub == null) {
             throw new NumberFormatException(format(msgTemplate, msgArgs));
         }
         return dub;
     }
 
-    public static <T> T checkInstanceOf(T reference, Class<?> type, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(type, msgTemplate, msgArgs).isInstance(checkNotNull(reference, msgTemplate, msgArgs)))) {
+    public static <T> T instanceOfType(T reference, Class<?> type, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(type, msgTemplate, msgArgs).isInstance(notNull(reference, msgTemplate, msgArgs)))) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
     }
 
-    public static Class<?> checkAssignableFrom(Class<?> reference, Class<?> type, String msgTemplate, Object... msgArgs) {
-        if (!(checkNotNull(type, msgTemplate, msgArgs).isAssignableFrom(checkNotNull(reference, msgTemplate, msgArgs)))) {
+    public static Class<?> assignableFromClass(Class<?> reference, Class<?> type, String msgTemplate, Object... msgArgs) {
+        if (!(notNull(type, msgTemplate, msgArgs).isAssignableFrom(notNull(reference, msgTemplate, msgArgs)))) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;
