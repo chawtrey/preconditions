@@ -126,7 +126,7 @@ public class PreChecks {
     /**
      * Validate that the reference {@code Collection} is not empty.
      *
-     * @param reference   the {@code Collection} to validate.
+     * @param reference the {@code Collection} to validate.
      * @param msg       the message to use for the exception.
      * @return the reference {@code Collection} if it is valid.
      * @throws IllegalArgumentException thrown if the reference {@code Collection} is empty.
@@ -636,5 +636,19 @@ public class PreChecks {
             throw new NumberFormatException(format(msgTemplate, msgArgs));
         }
         return dub;
+    }
+
+    public static <T> T checkInstanceOf(T reference, Class<?> type, String msgTemplate, Object... msgArgs) {
+        if (!(checkNotNull(type, msgTemplate, msgArgs).isInstance(checkNotNull(reference, msgTemplate, msgArgs)))) {
+            throw new IllegalArgumentException(format(msgTemplate, msgArgs));
+        }
+        return reference;
+    }
+
+    public static Class<?> checkAssignableFrom(Class<?> reference, Class<?> type, String msgTemplate, Object... msgArgs) {
+        if (!(checkNotNull(type, msgTemplate, msgArgs).isAssignableFrom(checkNotNull(reference, msgTemplate, msgArgs)))) {
+            throw new IllegalArgumentException(format(msgTemplate, msgArgs));
+        }
+        return reference;
     }
 }

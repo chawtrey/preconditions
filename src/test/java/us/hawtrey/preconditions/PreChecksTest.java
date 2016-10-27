@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -442,6 +444,39 @@ public class PreChecksTest {
             PreChecks.checkIntStrictly("3.2", "Non-strict Int");
             fail("Non-strict Int");
         } catch (NumberFormatException e) {
+            // success
+        }
+    }
+
+    @Test
+    public void checkInstanceOf() throws Exception {
+        assertEquals("foo", PreChecks.checkInstanceOf("foo", String.class, "foo", null));
+        PreChecks.checkInstanceOf(new ArrayList<String>(), List.class, "foo", null);
+
+        try {
+            PreChecks.checkInstanceOf("foo", Integer.class, "foo", null);
+            fail("invalid InstanceOf");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        try {
+            PreChecks.checkInstanceOf(new ArrayList<String>(), LinkedList.class, "foo", null);
+            fail("invalid InstanceOf");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+    }
+
+    @Test
+    public void checkAssignableFrom() throws Exception {
+        PreChecks.checkAssignableFrom(ArrayList.class, List.class, null, null);
+
+        try {
+            PreChecks.checkInstanceOf(ArrayList.class, LinkedList.class, "foo", null);
+            fail("invalid InstanceOf");
+        } catch (IllegalArgumentException e) {
             // success
         }
     }
