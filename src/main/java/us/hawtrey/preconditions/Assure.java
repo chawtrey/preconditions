@@ -189,7 +189,7 @@ public class Assure {
      * @return the reference object trimmed of leading and trailing whitespace.
      */
     public static String trimmedOrNull(String reference) {
-        return getPossibleNullString(trimmedOrEmpty(reference));
+        return (reference == null) ? null : trimmedOrEmpty(reference);
     }
 
     /**
@@ -202,7 +202,7 @@ public class Assure {
      * @return the reference object trimmed of leading and trailing whitespace and case shifted.
      */
     public static String trimmedLowerOrNull(String reference) {
-        return getPossibleNullString(trimmedLowerOrEmpty(reference));
+        return (reference == null) ? null : trimmedLowerOrEmpty(reference);
     }
 
     /**
@@ -215,11 +215,7 @@ public class Assure {
      * @return the reference object trimmed of leading and trailing whitespace and case shifted.
      */
     public static String trimmedUpperOrNull(String reference) {
-        return getPossibleNullString(trimmedUpperOrEmpty(reference));
-    }
-
-    private static String getPossibleNullString(String reference) {
-        return reference.length() == 0 ? null : reference;
+        return (reference == null) ? null : trimmedUpperOrEmpty(reference);
     }
 
     /**
@@ -355,6 +351,7 @@ public class Assure {
      * @return the {@link java.lang.Double} value of the reference String
      */
     public static Double doubleOrNull(String reference) {
+        if (reference == null) return null;
         try {
             return new Double(trimmedOrEmpty(reference));
         } catch (NumberFormatException e) {
