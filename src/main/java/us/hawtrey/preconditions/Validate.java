@@ -27,7 +27,7 @@ public class Validate {
     private static final String DEFAULT_POSITIVE_MESSAGE = "The value (%s) is not positive";
     private static final String DEFAULT_POSITIVE_OR_ZERO_MESSAGE = "The value (%s) is not positive or zero";
     private static final String DEFAULT_NEGATIVE_MESSAGE = "The value (%s) is not negative";
-    private static final String DEFAULT_NUMBER_VALUE = "The value (%s) is not %";
+    private static final String DEFAULT_NUMBER_VALUE = "The value (%s) is not %s";
     private static final String DEFAULT_NEGATIVE_OR_ZERO_MESSAGE = "The value (%s) is not negative or zero";
     private static final String DEFAULT_INSTANCE_OF_MESSAGE = "The validated object is not an instance of the given class";
     private static final String DEFAULT_ASSIGNABLE_FROM_MESSAGE = "The validated class cannot be assigned from the given class";
@@ -918,14 +918,41 @@ public class Validate {
         return dub;
     }
 
+    /**
+     * Validate that the reference object is an instance of the specified {@code Class}.
+     *
+     * @param reference the reference object to validate.
+     * @param type      the {@code Class} the reference object is validated against.
+     * @return the reference object.
+     * @throws IllegalArgumentException thrown if the reference object is not a valid instance of type {@code Class}.
+     */
     public static <T> T instanceOfType(T reference, Class<?> type) {
         return instanceOfType(reference, type, DEFAULT_INSTANCE_OF_MESSAGE, NULL_ARGS);
     }
 
+    /**
+     * Validate that the reference object is an instance of the specified {@code Class}.
+     *
+     * @param reference the reference object to validate.
+     * @param type      the {@code Class} the reference object is validated against.
+     * @param msg       the message to use for the exception.
+     * @return the reference object.
+     * @throws IllegalArgumentException thrown if the reference object is not a valid instance of type {@code Class}.
+     */
     public static <T> T instanceOfType(T reference, Class<?> type, String msg) {
         return instanceOfType(reference, type, msg, NULL_ARGS);
     }
 
+    /**
+     * Validate that the reference object is an instance of the specified {@code Class}.
+     *
+     * @param reference   the reference object to validate.
+     * @param type        the {@code Class} the reference object is validated against.
+     * @param msgTemplate the message template used to format the message for the exception.
+     * @param msgArgs     the message arguments used to format the message for the exception.
+     * @return the reference object.
+     * @throws IllegalArgumentException thrown if the reference object is not a valid instance of type {@code Class}.
+     */
     public static <T> T instanceOfType(T reference, Class<?> type, String msgTemplate, Object... msgArgs) {
         if (!(notNull(type, msgTemplate, msgArgs).isInstance(notNull(reference, msgTemplate, msgArgs)))) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
@@ -933,16 +960,43 @@ public class Validate {
         return reference;
     }
 
+    /**
+     * Validates that the typed class can be cast to the reference class, if not, throws an exception.
+     *
+     * @param reference the super {@code Class} to validate against.
+     * @param type      the {@code Class} to check.
+     * @return the reference super {@code Class}.
+     * @throws IllegalArgumentException thrown if type {@code Class} is not assignable to the reference super {@code Class}.
+     */
     public static Class<?> assignableFromClass(Class<?> reference, Class<?> type) {
         return assignableFromClass(reference, type, DEFAULT_ASSIGNABLE_FROM_MESSAGE, NULL_ARGS);
     }
 
+    /**
+     * Validates that the typed class can be cast to the reference class, if not, throws an exception.
+     *
+     * @param reference the super {@code Class} to validate against.
+     * @param type      the {@code Class} to check.
+     * @param msg       the message to use for the exception.
+     * @return the reference super {@code Class}.
+     * @throws IllegalArgumentException thrown if type {@code Class} is not assignable to the reference super {@code Class}.
+     */
     public static Class<?> assignableFromClass(Class<?> reference, Class<?> type, String msg) {
         return assignableFromClass(reference, type, msg, NULL_ARGS);
     }
 
+    /**
+     * Validates that the typed class can be cast to the reference class, if not, throws an exception.
+     *
+     * @param reference   the super {@code Class} to validate against.
+     * @param type        the {@code Class} to check.
+     * @param msgTemplate the message template used to format the message for the exception.
+     * @param msgArgs     the message arguments used to format the message for the exception.
+     * @return the reference super {@code Class}.
+     * @throws IllegalArgumentException thrown if type {@code Class} is not assignable to the reference super {@code Class}.
+     */
     public static Class<?> assignableFromClass(Class<?> reference, Class<?> type, String msgTemplate, Object... msgArgs) {
-        if (!(notNull(type, msgTemplate, msgArgs).isAssignableFrom(notNull(reference, msgTemplate, msgArgs)))) {
+        if (!(notNull(reference, msgTemplate, msgArgs).isAssignableFrom(notNull(type, msgTemplate, msgArgs)))) {
             throw new IllegalArgumentException(format(msgTemplate, msgArgs));
         }
         return reference;

@@ -27,15 +27,14 @@ If the validation fails then an exception is thrown.
 
         // Use pre-checks in validating constructor arguments
         public MyClass(String aString, int anInt, List<String> aList) {
-            this.aString = Validate.notNull(aString, "String cannot be NULL");
-            this.anInt = Validate.positiveOrZero(anInt, "int must be positive or zero");
-            this.aList = Validate.notEmpty(aList, "List cannot be empty");
+            this.aString = Validate.notNull(aString);
+            this.anInt = Validate.positiveOrZero(anInt);
+            this.aList = Validate.notEmpty(aList, "The list provided is empty");
         }
 
         // Use pre-checks to validate Objects returned from other classes
         public MyBean fetchMyBeanById(String id) {
-            return Validate.notNull(myDao.fetchById(
-                Validate.notBlank(id, "ID must be valid"), "No bean found for ID = (%s)", id));
+            return Validate.notNull(myDao.fetchById(Validate.notBlank(id), "No bean found for ID = (%s)", id));
         }
     }
 ```
@@ -66,8 +65,7 @@ However, the `Assure` methods do not throw exceptions, but rather return a defau
 
         // Use assurances to validate Objects returned from other classes
         public MyBean fetchMyBeanById(String id) {
-            return Assure.notNull(myDao.fetchById(
-                Assure.longValue(id, 123L), MyBean.class));
+            return Assure.notNull(myDao.fetchById(Assure.longValue(id, 123L), MyBean.class));
         }
     }
 ```

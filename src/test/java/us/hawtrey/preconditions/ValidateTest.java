@@ -17,11 +17,11 @@ public class ValidateTest {
     @Test
     public void checkNotNull() throws Exception {
         assertEquals("abc", Validate.notNull("abc", "valid"));
-        assertEquals("", Validate.notNull("", "valid blank"));
-        assertEquals("  ", Validate.notNull("  ", "valid whitespace"));
+        assertEquals("", Validate.notNull("", "valid"));
+        assertEquals("  ", Validate.notNull("  ", "valid"));
 
         try {
-            Validate.notNull(null, "invalid");
+            Validate.notNull(null);
             fail("notNull");
         } catch (NullPointerException e) {
             // success
@@ -33,21 +33,21 @@ public class ValidateTest {
         assertEquals("abc", Validate.notBlank("abc", "valid"));
 
         try {
-            Validate.notBlank("", "invalid blank");
+            Validate.notBlank("");
             fail("notBlank blank");
         } catch (IllegalArgumentException e) {
             // success
         }
 
         try {
-            Validate.notBlank("   ", "invalid whitespace");
+            Validate.notBlank("   ");
             fail("notBlank whitespace");
         } catch (IllegalArgumentException e) {
             // success
         }
 
         try {
-            Validate.notBlank(null, "invalid null");
+            Validate.notBlank(null);
             fail("notBlank null");
         } catch (NullPointerException e) {
             // success
@@ -59,7 +59,7 @@ public class ValidateTest {
         assertEquals("abc", Validate.argument("abc", true, "valid"));
 
         try {
-            Validate.argument("abc", false, "invalid");
+            Validate.argument("abc", false);
             fail("argument");
         } catch (IllegalArgumentException e) {
             // success
@@ -71,7 +71,7 @@ public class ValidateTest {
         HashMap<String, String> map = new HashMap<>();
 
         try {
-            Validate.notEmpty(map, "empty map");
+            Validate.notEmpty(map);
             fail("map is empty");
         } catch (Exception e) {
             // success
@@ -83,7 +83,7 @@ public class ValidateTest {
         ArrayList<String> list = new ArrayList<>();
 
         try {
-            Validate.notEmpty(list, "empty list");
+            Validate.notEmpty(list);
             fail("list is empty");
         } catch (Exception e) {
             // success
@@ -101,14 +101,14 @@ public class ValidateTest {
         assertEquals(input, Validate.elementIndex(input, 0, "valid"));
 
         try {
-            Validate.elementIndex(input, 1, "invalid");
+            Validate.elementIndex(input, 1);
             fail("invalid index");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.elementIndex(input, -1, "invalid");
+            Validate.elementIndex(input, -1);
             fail("negative index");
         } catch (IllegalArgumentException e) {
             // success
@@ -116,7 +116,7 @@ public class ValidateTest {
 
         try {
             input = null;
-            Validate.elementIndex(input, 0, "invalid");
+            Validate.elementIndex(input, 0);
             fail("null input");
         } catch (NullPointerException e) {
             // success
@@ -127,7 +127,7 @@ public class ValidateTest {
     public void checkElementIndexList() throws Exception {
         ArrayList<String> input = null;
         try {
-            Validate.elementIndex(input, 0, "NULL ArrayList");
+            Validate.elementIndex(input, 0);
             fail("Should fail since list is null");
         } catch (NullPointerException e) {
             // success
@@ -139,14 +139,14 @@ public class ValidateTest {
         Validate.elementIndex(input, 0, "Success ArrayList");
 
         try {
-            Validate.elementIndex(input, 1, "ArrayList");
+            Validate.elementIndex(input, 1);
             fail("Should fail since list only has 1 entry");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.elementIndex(input, -1, "ArrayList");
+            Validate.elementIndex(input, -1);
             fail("Should fail since -1 is invalid index");
         } catch (IllegalArgumentException e) {
             // success
@@ -158,21 +158,21 @@ public class ValidateTest {
         Validate.elementIndex("a", 0, "Success String");
 
         try {
-            Validate.elementIndex("a", 1, "String");
+            Validate.elementIndex("a", 1);
             fail("Should fail since String is only 1 character long");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.elementIndex("", 0, "String");
+            Validate.elementIndex("", 0);
             fail("Should fail since String is empty");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.elementIndex("a", -1, "String");
+            Validate.elementIndex("a", -1);
             fail("Should fail since -1 is invalid index");
         } catch (IllegalArgumentException e) {
             // success
@@ -180,7 +180,7 @@ public class ValidateTest {
 
         try {
             String input = null;
-            Validate.elementIndex(input, 0, "NULL ArrayList");
+            Validate.elementIndex(input, 0);
             fail("Should fail since String is null");
         } catch (NullPointerException e) {
             // success
@@ -196,14 +196,14 @@ public class ValidateTest {
         assertEquals(input, Validate.positionIndex(input, 1, "valid"));
 
         try {
-            Validate.positionIndex(input, 2, "invalid");
+            Validate.positionIndex(input, 2);
             fail("invalid index");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.positionIndex(input, -1, "invalid");
+            Validate.positionIndex(input, -1);
             fail("negative index");
         } catch (IllegalArgumentException e) {
             // success
@@ -211,7 +211,7 @@ public class ValidateTest {
 
         try {
             input = null;
-            Validate.positionIndex(input, 0, "invalid");
+            Validate.positionIndex(input, 0);
             fail("null input");
         } catch (NullPointerException e) {
             // success
@@ -227,14 +227,14 @@ public class ValidateTest {
         Validate.positionIndex(input, 1, "Success ArrayList");
 
         try {
-            Validate.positionIndex(input, 2, "ArrayList");
+            Validate.positionIndex(input, 2);
             fail("Should fail since list only has 1 entry");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.positionIndex(input, -1, "ArrayList");
+            Validate.positionIndex(input, -1);
             fail("Should fail since -1 is invalid index");
         } catch (IllegalArgumentException e) {
             // success
@@ -242,7 +242,7 @@ public class ValidateTest {
 
         try {
             input = null;
-            Validate.positionIndex(input, 0, "NULL ArrayList");
+            Validate.positionIndex(input, 0);
             fail("Should fail since list is null");
         } catch (NullPointerException e) {
             // success
@@ -260,14 +260,14 @@ public class ValidateTest {
         Validate.positionIndex(input, 1, "Success String");
 
         try {
-            Validate.positionIndex(input, 2, "String");
+            Validate.positionIndex(input, 2);
             fail("Should fail since String is only 1 character long");
         } catch (IndexOutOfBoundsException e) {
             // success
         }
 
         try {
-            Validate.positionIndex(input, -1, "String");
+            Validate.positionIndex(input, -1);
             fail("Should fail since -1 is invalid index");
         } catch (IllegalArgumentException e) {
             // success
@@ -275,7 +275,7 @@ public class ValidateTest {
 
         try {
             input = null;
-            Validate.positionIndex(input, 0, "NULL ArrayList");
+            Validate.positionIndex(input, 0);
             fail("Should fail since String is NULL");
         } catch (NullPointerException e) {
             // success
@@ -297,21 +297,21 @@ public class ValidateTest {
         Validate.inRange(2, 2, 2, "all values equal");
 
         try {
-            Validate.inRange(1.000000000001, 0D, 1D, "Double");
+            Validate.inRange(1.000000000001, 0D, 1D);
             fail("out of range");
         } catch (IllegalArgumentException e) {
             // success
         }
 
         try {
-            Validate.inRange(1.000000000001, null, 1D, "Double");
+            Validate.inRange(1.000000000001, null, 1D);
             fail("null start");
         } catch (IllegalArgumentException e) {
             // success
         }
 
         try {
-            Validate.inRange(1.000000000001, 0D, null, "Double");
+            Validate.inRange(1.000000000001, 0D, null);
             fail("null end");
         } catch (IllegalArgumentException e) {
             // success
@@ -326,13 +326,13 @@ public class ValidateTest {
         Validate.positive(0.000000000000001F, "float");
         Validate.positive(new BigInteger("1"), "big integer");
         try {
-            Validate.positive(0, "zero");
+            Validate.positive(0);
             fail("Should fail since value is zero");
         } catch (IllegalArgumentException e) {
             // success
         }
         try {
-            Validate.positive(-0.000000000000001D, "double");
+            Validate.positive(-0.000000000000001D);
             fail("Should fail since value is not positive");
         } catch (IllegalArgumentException e) {
             // success
@@ -348,7 +348,7 @@ public class ValidateTest {
         Validate.positiveOrZero(new BigInteger("1"), "big integer");
         Validate.positiveOrZero(0, "zero");
         try {
-            Validate.positiveOrZero(-0.000000000000001D, "double");
+            Validate.positiveOrZero(-0.000000000000001D);
             fail("Should fail since value is not positive");
         } catch (IllegalArgumentException e) {
             // success
@@ -361,13 +361,13 @@ public class ValidateTest {
         Validate.negative(-10000L, "long");
         Validate.negative(-0.00000000001D, "double");
         try {
-            Validate.negative(0, "zero");
+            Validate.negative(0);
             fail("Should fail since value zero");
         } catch (IllegalArgumentException e) {
             // success
         }
         try {
-            Validate.negative(0.000000000000001D, "double");
+            Validate.negative(0.000000000000001D);
             fail("Should fail since value is not negative");
         } catch (IllegalArgumentException e) {
             // success
@@ -380,7 +380,7 @@ public class ValidateTest {
         Validate.negativeOrZero(-0.00000000001D, "double");
         Validate.negativeOrZero(0, "zero");
         try {
-            Validate.negativeOrZero(0.000000000000001D, "double");
+            Validate.negativeOrZero(0.000000000000001D);
             fail("Should fail since value is not negative");
         } catch (IllegalArgumentException e) {
             // success
@@ -418,30 +418,37 @@ public class ValidateTest {
         assertEquals(123F, f2, 0F);
 
         try {
-            Validate.doubleValue("3-21", "Dash in middle");
+            Validate.intValue("3-21");
             fail("Dash in middle");
         } catch (NumberFormatException e) {
             // success
         }
 
         try {
-            Validate.doubleValue("3.2.1", "Multiple dots");
+            Validate.floatValue("3.2.1");
             fail("Multiple dots");
         } catch (NumberFormatException e) {
             // success
         }
 
         try {
-            Validate.doubleValue("3 2", "Whitespace");
+            Validate.longValue("3 2");
             fail("Whitespace");
         } catch (NumberFormatException e) {
+            // success
+        }
+
+        try {
+            Validate.doubleValue(null);
+            fail("null");
+        } catch (NullPointerException e) {
             // success
         }
 
         Validate.strictlyIntValue("123", "Valid strict int");
 
         try {
-            Validate.strictlyIntValue("3.2", "Non-strict Int");
+            Validate.strictlyIntValue("3.2");
             fail("Non-strict Int");
         } catch (NumberFormatException e) {
             // success
@@ -450,18 +457,18 @@ public class ValidateTest {
 
     @Test
     public void checkInstanceOf() throws Exception {
-        assertEquals("foo", Validate.instanceOfType("foo", String.class, "foo", null));
-        Validate.instanceOfType(new ArrayList<String>(), List.class, "foo", null);
+        assertEquals("foo", Validate.instanceOfType("foo", String.class, "valid string"));
+        Validate.instanceOfType(new ArrayList<String>(), List.class, "valid list");
 
         try {
-            Validate.instanceOfType("foo", Integer.class, "foo", null);
+            Validate.instanceOfType("foo", Integer.class);
             fail("invalid InstanceOf");
         } catch (IllegalArgumentException e) {
             // success
         }
 
         try {
-            Validate.instanceOfType(new ArrayList<String>(), LinkedList.class, "foo", null);
+            Validate.instanceOfType(new ArrayList<String>(), LinkedList.class);
             fail("invalid InstanceOf");
         } catch (IllegalArgumentException e) {
             // success
@@ -471,13 +478,36 @@ public class ValidateTest {
 
     @Test
     public void checkAssignableFrom() throws Exception {
-        Validate.assignableFromClass(ArrayList.class, List.class, null, null);
+        Validate.assignableFromClass(List.class, ArrayList.class, "valid list");
 
         try {
-            Validate.assignableFromClass(ArrayList.class, LinkedList.class, "foo", null);
-            fail("invalid InstanceOf");
+            Validate.assignableFromClass(ArrayList.class, List.class);
+            fail("invalid assignableFrom");
         } catch (IllegalArgumentException e) {
             // success
         }
+
+        try {
+            Validate.assignableFromClass(ArrayList.class, LinkedList.class);
+            fail("invalid assignableFrom");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+
+        List<String> input = new ArrayList<>();
+        input.add("foo");
+
+        ArrayList<String> al1 = castIt(input, ArrayList.class);
+
+        try {
+            LinkedList<String> ll1 = castIt(input, LinkedList.class);
+            fail("invalid assignableFrom");
+        } catch (IllegalArgumentException e) {
+            // success
+        }
+    }
+
+    private <T extends List> T castIt(List<String> input, Class<T> clazz) {
+        return (T) (Validate.assignableFromClass(clazz, input.getClass())).cast(input);
     }
 }
