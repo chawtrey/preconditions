@@ -18,19 +18,22 @@ public class Validate {
     private static final String DEFAULT_EMPTY_MAP_MESSAGE = "The validated map is empty";
     private static final String DEFAULT_EMPTY_COLLECTION_MESSAGE = "The validated collection is empty";
     private static final String DEFAULT_VALID_INDEX_MAP_MESSAGE =
-            "The %s index (%d) is invalid for a map with size (%d)";
+            "The %s index (%s) is invalid for a map with size (%s)";
     private static final String DEFAULT_VALID_INDEX_COLLECTION_MESSAGE =
-            "The %s index (%d) is invalid for a collection with size (%d)";
+            "The %s index (%s) is invalid for a collection with size (%s)";
     private static final String DEFAULT_VALID_INDEX_STRING_MESSAGE =
-            "The %s index (%d) is invalid for the String: %s";
+            "The %s index (%s) is invalid for the String: %s";
     private static final String DEFAULT_IN_RANGE_MESSAGE = "The value %s is not in the range of %s to %s";
     private static final String DEFAULT_POSITIVE_MESSAGE = "The value (%s) is not positive";
     private static final String DEFAULT_POSITIVE_OR_ZERO_MESSAGE = "The value (%s) is not positive or zero";
     private static final String DEFAULT_NEGATIVE_MESSAGE = "The value (%s) is not negative";
     private static final String DEFAULT_NUMBER_VALUE = "The value (%s) is not %s";
     private static final String DEFAULT_NEGATIVE_OR_ZERO_MESSAGE = "The value (%s) is not negative or zero";
-    private static final String DEFAULT_INSTANCE_OF_MESSAGE = "The validated object is not an instance of the given class";
-    private static final String DEFAULT_ASSIGNABLE_FROM_MESSAGE = "The validated class cannot be assigned from the given class";
+    private static final String DEFAULT_INSTANCE_OF_MESSAGE =
+            "The validated object is not an instance of the given class";
+    private static final String DEFAULT_ASSIGNABLE_FROM_MESSAGE =
+            "The validated class cannot be assigned from the given class";
+    private static final String NULL_STRING = "null";
 
     /**
      * Validates that the reference {@code Object} is not null.
@@ -240,8 +243,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
     public static <T extends Map> T elementIndex(T reference, int index) {
-        int size = reference == null ? -1 : reference.size();
-        return elementIndex(reference, index, DEFAULT_VALID_INDEX_MAP_MESSAGE, ELEMENT_INDEX_TYPE, index, size);
+        return elementIndex(reference, index, DEFAULT_VALID_INDEX_MAP_MESSAGE, ELEMENT_INDEX_TYPE, index, msgSize(reference));
     }
 
     /**
@@ -286,8 +288,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
     public static <T extends Collection> T elementIndex(T reference, int index) {
-        int size = reference == null ? -1 : reference.size();
-        return elementIndex(reference, index, DEFAULT_VALID_INDEX_COLLECTION_MESSAGE, ELEMENT_INDEX_TYPE, index, size);
+        return elementIndex(reference, index, DEFAULT_VALID_INDEX_COLLECTION_MESSAGE, ELEMENT_INDEX_TYPE, index, msgSize(reference));
     }
 
     /**
@@ -332,8 +333,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
     public static String elementIndex(String reference, int index) {
-        String ref = reference == null ? "null" : reference;
-        return elementIndex(reference, index, DEFAULT_VALID_INDEX_STRING_MESSAGE, ELEMENT_INDEX_TYPE, index, ref);
+        return elementIndex(reference, index, DEFAULT_VALID_INDEX_STRING_MESSAGE, ELEMENT_INDEX_TYPE, index, msgSafe(reference));
     }
 
     /**
@@ -378,8 +378,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Map}.
      */
     public static <T extends Map> T positionIndex(T reference, int index) {
-        int size = reference == null ? -1 : reference.size();
-        return positionIndex(reference, index, DEFAULT_VALID_INDEX_MAP_MESSAGE, POSITION_INDEX_TYPE, index, size);
+        return positionIndex(reference, index, DEFAULT_VALID_INDEX_MAP_MESSAGE, POSITION_INDEX_TYPE, index, msgSize(reference));
     }
 
     /**
@@ -424,8 +423,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code Collection}.
      */
     public static <T extends Collection> T positionIndex(T reference, int index) {
-        int size = reference == null ? -1 : reference.size();
-        return positionIndex(reference, index, DEFAULT_VALID_INDEX_COLLECTION_MESSAGE, POSITION_INDEX_TYPE, index, size);
+        return positionIndex(reference, index, DEFAULT_VALID_INDEX_COLLECTION_MESSAGE, POSITION_INDEX_TYPE, index, msgSize(reference));
     }
 
     /**
@@ -470,8 +468,7 @@ public class Validate {
      * @throws IndexOutOfBoundsException thrown if the {@code index} is not valid for the reference {@code String}.
      */
     public static String positionIndex(String reference, int index) {
-        String ref = reference == null ? "null" : reference;
-        return positionIndex(reference, index, DEFAULT_VALID_INDEX_STRING_MESSAGE, POSITION_INDEX_TYPE, index, ref);
+        return positionIndex(reference, index, DEFAULT_VALID_INDEX_STRING_MESSAGE, POSITION_INDEX_TYPE, index, msgSafe(reference));
     }
 
     /**
@@ -517,10 +514,7 @@ public class Validate {
      * @throws IllegalArgumentException thrown if the reference {@code Number} falls outside of the range.
      */
     public static <T extends Comparable<T>> T inRange(T reference, T start, T end) {
-        String rMsgVal = reference == null ? "null" : reference.toString();
-        String sMsgVal = start == null ? "null" : start.toString();
-        String eMsgVal = end == null ? "null" : end.toString();
-        return inRange(reference, start, end, DEFAULT_IN_RANGE_MESSAGE, rMsgVal, sMsgVal, eMsgVal);
+        return inRange(reference, start, end, DEFAULT_IN_RANGE_MESSAGE, msgSafe(reference), msgSafe(start), msgSafe(end));
     }
 
     /**
@@ -1003,6 +997,14 @@ public class Validate {
     }
 
     private static String msgSafe(Object reference) {
-        return (reference == null) ? "null" : String.valueOf(reference);
+        return (reference == null) ? NULL_STRING : String.valueOf(reference);
+    }
+
+    private static <T extends Map> String msgSize(T reference) {
+        return (reference == null) ? NULL_STRING : String.valueOf(reference.size());
+    }
+
+    private static <T extends Collection> String msgSize(T reference) {
+        return (reference == null) ? NULL_STRING : String.valueOf(reference.size());
     }
 }

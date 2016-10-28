@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@SuppressWarnings("ConstantConditions")
+@SuppressWarnings({"ConstantConditions", "unused", "unchecked"})
 public class ValidateTest {
 
     @Test
@@ -130,7 +130,7 @@ public class ValidateTest {
             Validate.elementIndex(input, 0);
             fail("Should fail since list is null");
         } catch (NullPointerException e) {
-            // success
+            assertEquals("The element index (0) is invalid for a collection with size (null)", e.getMessage());
         }
 
         input = new ArrayList<>();
